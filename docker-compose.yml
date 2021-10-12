@@ -2,14 +2,14 @@ version: "3.8"
 
 services:
   database:
-    image: postgres
-      container_name: postgres:latest
-      environment:
-        POSTGRES_PASSWORD: root
-      ports:
-        - "5432:5432"
-      networks:
-        my-bridge
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    networks:
+      - my-bridge
 
 networks:
   my-bridge:
