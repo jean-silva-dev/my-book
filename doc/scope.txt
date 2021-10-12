@@ -1,0 +1,2 @@
+Demostrar o uso de testes em Golang de três maneiras. Por funcção, iterado e 
+interface gráfica.
