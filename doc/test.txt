@@ -1,0 +1,3 @@
+Rodar todos os testes
+
+go test -v ./...
