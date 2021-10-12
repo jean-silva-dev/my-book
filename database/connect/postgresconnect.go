@@ -3,6 +3,7 @@ package connect
 import (
 	"database/sql"
 	"fmt"
+	"sync"
 
 	_ "github.com/lib/pq"
 )
@@ -15,15 +16,25 @@ const (
 	dbname   = "postgres"
 )
 
+var singleInstance *PostgresConnect
+
 type PostgresConnect struct {
-	Db *sql.DB
+	db   *sql.DB
+	look *sync.Mutex
 }
 
-func InitPostgresConnect() *PostgresConnect {
+func (pc PostgresConnect) GetDb() *sql.DB {
+	return pc.db
+}
+
+func createConnect() *PostgresConnect {
 	db := openDatabase()
-	return &PostgresConnect{
-		Db: db,
+	pc := &PostgresConnect{
+		db:   db,
+		look: &sync.Mutex{},
 	}
+
+	return pc
 }
 
 func openDatabase() *sql.DB {
@@ -43,4 +54,23 @@ func openDatabase() *sql.DB {
 	}
 
 	return db
+}
+
+func GetInstance() *PostgresConnect {
+	if singleInstance == nil {
+		pc := createConnect()
+		pc.look.Lock()
+		defer pc.look.Unlock()
+
+		if singleInstance == nil {
+			singleInstance = pc
+			fmt.Println("Creating single instance now.")
+		} else {
+			fmt.Println("Single instance already created.")
+		}
+	} else {
+		fmt.Println("Single instance already created.")
+	}
+
+	return singleInstance
 }

@@ -8,6 +8,18 @@ type BookEntity struct {
 	year   int
 }
 
+func (be *BookEntity) GetTitle() string {
+	return be.title
+}
+
+func (be *BookEntity) GetAuthor() string {
+	return be.author
+}
+
+func (be *BookEntity) GetYear() int {
+	return be.year
+}
+
 func (be *BookEntity) SetTitle(title string) error {
 
 	if title == "" {
