@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"book/database/model"
 	"book/entity"
 	"database/sql"
 )
@@ -19,8 +20,32 @@ func (pr PostgresRepository) Insert(be entity.BookEntity) error {
 
 	return err
 }
-func (pr PostgresRepository) Get(entity.BookEntity) error {
-	return nil
+func (pr PostgresRepository) GetAll() ([]model.BookModel, error) {
+	bms := make([]model.BookModel, 0)
+
+	rows, err := pr.Db.Query(`SELECT title, author, year FROM books`)
+
+	if err != nil {
+		return bms, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var bm model.BookModel
+
+		err := rows.Scan(
+			&bm.Title,
+			&bm.Author,
+			&bm.Year,
+		)
+
+		if err != nil {
+			return bms, err
+		}
+		bms = append(bms, bm)
+	}
+
+	return bms, err
 }
 func (pr PostgresRepository) Update(entity.BookEntity) error {
 	return nil

@@ -3,6 +3,7 @@ package connect
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"sync"
 
 	_ "github.com/lib/pq"
@@ -64,12 +65,8 @@ func GetInstance() *PostgresConnect {
 
 		if singleInstance == nil {
 			singleInstance = pc
-			fmt.Println("Creating single instance now.")
-		} else {
-			fmt.Println("Single instance already created.")
+			log.Println("Creating single instance now.")
 		}
-	} else {
-		fmt.Println("Single instance already created.")
 	}
 
 	return singleInstance

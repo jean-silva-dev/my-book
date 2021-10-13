@@ -44,7 +44,16 @@ func insert() {
 }
 
 func read() {
-	fmt.Println("Not yea implemented.")
+	buc := factorymethod.CreateBookUseCase()
+	bes := buc.GetBooks()
+
+	fmt.Println("Returned values on database:")
+	fmt.Println()
+	for _, value := range bes {
+		fmt.Printf("Title name: %s. \n", value.Title)
+		fmt.Printf("Actor name: %s. \n", value.Author)
+		fmt.Printf("Publication year: %d. \n", value.Year)
+	}
 }
 
 func update() {

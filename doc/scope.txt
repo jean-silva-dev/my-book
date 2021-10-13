@@ -1,2 +1,4 @@
 Demostrar o uso de testes em Golang de três maneiras. Por funcções, iterado e 
-interface gráfica.
+interface gráfica. E o uso de Mocks.
+
+Demostrar como os testes funcionam em outra linguagem de programacão.
