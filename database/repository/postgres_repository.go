@@ -47,9 +47,42 @@ func (pr PostgresRepository) GetAll() ([]model.BookModel, error) {
 
 	return bms, err
 }
-func (pr PostgresRepository) Update(entity.BookEntity) error {
-	return nil
+func (pr PostgresRepository) Update(index int, be entity.BookEntity) error {
+	_, err := pr.Db.Exec(`
+		UPDATE books
+		SET title = $1, author = $2, year = $3
+		WHERE id = $4
+		`,
+		be.GetTitle(),
+		be.GetAuthor(),
+		be.GetYear(),
+		index)
+
+	return err
 }
-func (pr PostgresRepository) Remove(entity.BookEntity) error {
-	return nil
+
+func (pr PostgresRepository) Remove(index int) error {
+	_, err := pr.Db.Exec(`
+		DELETE FROM books
+		WHERE id = $1
+		`,
+		index)
+
+	return err
+}
+func (pr PostgresRepository) FindByName(name string) (int, error) {
+	var index int
+
+	row := pr.Db.QueryRow(`
+		SELECT id
+		FROM books
+		WHERE title = $1
+		`,
+		name)
+
+	err := row.Scan(
+		&index,
+	)
+
+	return index, err
 }

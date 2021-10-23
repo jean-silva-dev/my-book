@@ -8,27 +8,52 @@ import (
 )
 
 type BookUseCase struct {
-	Ir repository.InterfaceRepository
+	ir repository.InterfaceRepository
 }
 
-func (buc BookUseCase) CreateBook(title, actor string, year int) {
+func (buc *BookUseCase) SetInterfaceRepository(ir repository.InterfaceRepository) {
+	buc.ir = ir
+}
+
+func (buc *BookUseCase) CreateBook(actor, title string, year int) {
 	be := entity.BookEntity{}
-	be.SetTitle(title)
 	be.SetAuthor(actor)
+	be.SetTitle(title)
 	be.SetYear(year)
-	err := buc.Ir.Insert(be)
+	err := buc.ir.Insert(be)
 
 	if err != nil {
 		fmt.Printf("Had a error on create book on database: %s.\n", err)
 	}
 }
 
-func (buc BookUseCase) GetBooks() []model.BookModel {
-	bms, err := buc.Ir.GetAll()
+func (buc *BookUseCase) GetBooks() []model.BookModel {
+	bms, err := buc.ir.GetAll()
 
 	if err != nil {
 		fmt.Printf("Had a error on read book on database: %s.\n", err)
 	}
 
 	return bms
+}
+
+func (buc *BookUseCase) UpdateBook(actor, title string, year, index int) {
+	be := entity.BookEntity{}
+	be.SetAuthor(actor)
+	be.SetTitle(title)
+	be.SetYear(year)
+	err := buc.ir.Update(index, be)
+
+	if err != nil {
+		fmt.Printf("Had a error on update book on database: %s.\n", err)
+	}
+}
+
+func (buc *BookUseCase) FindByNameBook(name string) int {
+	index, err := buc.ir.FindByName(name)
+
+	if err != nil {
+		fmt.Printf("Had a error on find by name book on database: %s.\n", err)
+	}
+	return index
 }

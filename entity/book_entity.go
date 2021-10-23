@@ -1,53 +1,43 @@
 package entity
 
-import "errors"
-
 type BookEntity struct {
-	title  string
 	author string
+	title  string
 	year   int
-}
-
-func (be *BookEntity) GetTitle() string {
-	return be.title
 }
 
 func (be *BookEntity) GetAuthor() string {
 	return be.author
 }
 
+func (be *BookEntity) GetTitle() string {
+	return be.title
+}
+
 func (be *BookEntity) GetYear() int {
 	return be.year
 }
 
-func (be *BookEntity) SetTitle(title string) error {
-
-	if title == "" {
-		return errors.New("the title is empty")
-	}
-
-	be.title = title
-
-	return nil
-}
-
-func (be *BookEntity) SetAuthor(author string) error {
+func (be *BookEntity) SetAuthor(author string) {
 
 	if author == "" {
-		return errors.New("the author is empty")
+		panic("Author cannot be empty.")
 	}
 	be.author = author
-
-	return nil
 }
 
-func (be *BookEntity) SetYear(year int) error {
+func (be *BookEntity) SetTitle(title string) {
+
+	if title == "" {
+		panic("Title cannot be empty.")
+	}
+	be.title = title
+}
+
+func (be *BookEntity) SetYear(year int) {
 
 	if year == 0 {
-		return errors.New("the year is not have value")
+		panic("Year cannot be 0.")
 	}
-
 	be.year = year
-
-	return nil
 }

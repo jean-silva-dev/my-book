@@ -3,34 +3,21 @@ package entity_test
 import (
 	"book/entity"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
-
-func TestWithEmptyTitle(t *testing.T) {
-	b := &entity.BookEntity{}
-	actual := b.SetTitle("")
-
-	if actual == nil {
-		t.Fatal("Expected:", nil, "got:", actual)
-	}
-
-}
 
 func TestWithEmptyAuthor(t *testing.T) {
 	b := &entity.BookEntity{}
-	actual := b.SetAuthor("")
+	assert.Panics(t, func() { b.SetAuthor("") }, "The code did panic.")
 
-	if actual == nil {
-		t.Fatal("Expected:", nil, "got:", actual)
-	}
-
+}
+func TestWithEmptyTitle(t *testing.T) {
+	b := &entity.BookEntity{}
+	assert.Panics(t, func() { b.SetTitle("") }, "The code did panic.")
 }
 
 func TestWithEmptyYear(t *testing.T) {
 	b := &entity.BookEntity{}
-	actual := b.SetYear(0)
-
-	if actual == nil {
-		t.Fatal("Expected:", nil, "got:", actual)
-	}
-
+	assert.Panics(t, func() { b.SetYear(0) }, "The code did panic.")
 }

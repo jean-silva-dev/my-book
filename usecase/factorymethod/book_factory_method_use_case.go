@@ -7,8 +7,7 @@ import (
 
 func CreateBookUseCase() *usecase.BookUseCase {
 	pr := factorymethod.CreatePostgresRepository()
-	buc := &usecase.BookUseCase{
-		Ir: pr,
-	}
+	buc := &usecase.BookUseCase{}
+	buc.SetInterfaceRepository(pr)
 	return buc
 }
