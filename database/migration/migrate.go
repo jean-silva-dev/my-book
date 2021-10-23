@@ -17,12 +17,12 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://database/migration/sql",
+	migr, err := migrate.NewWithDatabaseInstance(
+		"file://database/migration/sql/",
 		"postgres", driver)
 
 	if err != nil {
 		panic(err)
 	}
-	m.Steps(2)
+	migr.Steps(2)
 }
