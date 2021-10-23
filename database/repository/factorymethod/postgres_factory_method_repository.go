@@ -5,11 +5,11 @@ import (
 	"book/database/repository"
 )
 
-func CreatePostgresRepository() repository.PostgresRepository {
+func CreatePostgresRepository() *repository.PostgresRepository {
 	db := connect.GetInstance().GetDb()
 
-	pr := &repository.PostgresRepository{
-		Db: db}
+	pr := &repository.PostgresRepository{}
+	pr.SetDb(db)
 
-	return *pr
+	return pr
 }

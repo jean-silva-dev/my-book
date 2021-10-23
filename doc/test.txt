@@ -1,3 +1,0 @@
-PAra rodar todos os testes
-
-go test -v ./...

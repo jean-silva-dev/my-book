@@ -1,2 +1,0 @@
-Suba o docker-compose com o comando up -d.
-

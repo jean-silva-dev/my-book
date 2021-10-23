@@ -1,4 +1,0 @@
-Para nomear package, function, variables e files deve se usar o padrão definido 
-pela documentação de Golang.
-
-https://golang.org/doc/effective_go

@@ -7,11 +7,15 @@ import (
 )
 
 type PostgresRepository struct {
-	Db *sql.DB
+	db *sql.DB
 }
 
-func (pr PostgresRepository) Insert(be entity.BookEntity) error {
-	_, err := pr.Db.Exec(`
+func (pr *PostgresRepository) SetDb(db *sql.DB) {
+	pr.db = db
+}
+
+func (pr *PostgresRepository) Insert(be entity.BookEntity) error {
+	_, err := pr.db.Exec(`
 		INSERT INTO books (title, author, year)
 		VALUES ($1, $2, $3) `,
 		be.GetTitle(),
@@ -20,10 +24,10 @@ func (pr PostgresRepository) Insert(be entity.BookEntity) error {
 
 	return err
 }
-func (pr PostgresRepository) GetAll() ([]model.BookModel, error) {
+func (pr *PostgresRepository) GetAll() ([]model.BookModel, error) {
 	bms := make([]model.BookModel, 0)
 
-	rows, err := pr.Db.Query(`SELECT title, author, year FROM books`)
+	rows, err := pr.db.Query(`SELECT title, author, year FROM books`)
 
 	if err != nil {
 		return bms, err
@@ -47,8 +51,8 @@ func (pr PostgresRepository) GetAll() ([]model.BookModel, error) {
 
 	return bms, err
 }
-func (pr PostgresRepository) Update(index int, be entity.BookEntity) error {
-	_, err := pr.Db.Exec(`
+func (pr *PostgresRepository) Update(index int, be entity.BookEntity) error {
+	_, err := pr.db.Exec(`
 		UPDATE books
 		SET title = $1, author = $2, year = $3
 		WHERE id = $4
@@ -61,8 +65,8 @@ func (pr PostgresRepository) Update(index int, be entity.BookEntity) error {
 	return err
 }
 
-func (pr PostgresRepository) Remove(index int) error {
-	_, err := pr.Db.Exec(`
+func (pr *PostgresRepository) Remove(index int) error {
+	_, err := pr.db.Exec(`
 		DELETE FROM books
 		WHERE id = $1
 		`,
@@ -70,10 +74,10 @@ func (pr PostgresRepository) Remove(index int) error {
 
 	return err
 }
-func (pr PostgresRepository) FindByName(name string) (int, error) {
+func (pr *PostgresRepository) FindByName(name string) (int, error) {
 	var index int
 
-	row := pr.Db.QueryRow(`
+	row := pr.db.QueryRow(`
 		SELECT id
 		FROM books
 		WHERE title = $1
