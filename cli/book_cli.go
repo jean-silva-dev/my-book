@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"book/cli/data"
 	"book/database/model"
 	"book/usecase/factorymethod"
 	"fmt"
@@ -20,6 +21,7 @@ func Init() {
 		fmt.Println("4 - remove a book;")
 		fmt.Println("0 - exit programm.")
 
+		// answer = 1
 		fmt.Scanln(&answer)
 
 		switch answer {
@@ -41,31 +43,31 @@ func Init() {
 }
 
 func insert() {
-	var title string
-	var actor string
-	var year int
-	fmt.Print("Title name:")
-	fmt.Scanln(&title)
-	fmt.Print("Actor name:")
-	fmt.Scanln(&actor)
-	fmt.Print("Publication year:")
-	fmt.Scanln(&year)
+	fmt.Println("")
+	fmt.Println("Insert data from new book.")
+	fmt.Println("")
+	be := createBookEntity()
 	buc := factorymethod.CreateBookUseCase()
-	buc.CreateBook(title, actor, year)
+	buc.CreateBook(be)
 }
 
 func read() {
 	books := getAllBooks()
 
-	fmt.Println("")
-	fmt.Println("Returned values on database:")
-	fmt.Println("")
-	fmt.Println("----------")
-	for _, value := range books {
-		fmt.Printf("Actor name: %s. \n", value.Author)
-		fmt.Printf("Title name: %s. \n", value.Title)
-		fmt.Printf("Publication year: %d. \n", value.Year)
+	if len(books) == 0 {
+		log.Println("None data was found on database.")
+	} else {
+		fmt.Println("")
+		log.Println("Returned values on database:")
+		fmt.Println("")
 		fmt.Println("----------")
+
+		for _, value := range books {
+			fmt.Printf("Actor name: %s. \n", value.Author)
+			fmt.Printf("Title name: %s. \n", value.Title)
+			fmt.Printf("Publication year: %d. \n", value.Year)
+			fmt.Println("----------")
+		}
 	}
 }
 
@@ -119,7 +121,53 @@ func update() {
 }
 
 func delete() {
-	fmt.Println("Not yea implemented.")
+	books := getAllBooks()
+
+	for {
+		fmt.Println("")
+		fmt.Println("What is the item that you wish to delete?")
+		fmt.Println("")
+		fmt.Println("----------")
+		for index, value := range books {
+			fmt.Printf("[%d]\n", index+1)
+			fmt.Printf("Actor name: %s. \n", value.Author)
+			fmt.Printf("Title name: %s. \n", value.Title)
+			fmt.Printf("Publication year: %d. \n", value.Year)
+			fmt.Println("----------")
+		}
+		var answer int
+		fmt.Scanln(&answer)
+
+		if answer <= 0 {
+			log.Println("Please, select a right value.")
+			continue
+		}
+
+		if answer > len(books) {
+			log.Println("Please, select a right value.")
+			continue
+		}
+
+		index := answer - 1
+		element := books[index]
+		buc := factorymethod.CreateBookUseCase()
+		indexForChange := buc.FindByNameBook(element.Title)
+
+		buc.DeleteBook(indexForChange)
+		break
+	}
+}
+
+func createBookEntity() *data.BookData {
+	bd := &data.BookData{}
+
+	fmt.Print("Title name:")
+	fmt.Scanln(&bd.Title)
+	fmt.Print("Actor name:")
+	fmt.Scanln(&bd.Author)
+	fmt.Print("Publication year:")
+	fmt.Scanln(&bd.Year)
+	return bd
 }
 
 func getAllBooks() []model.BookModel {
