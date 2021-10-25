@@ -24,6 +24,7 @@ func (pr *PostgresRepository) Insert(be entity.BookEntity) error {
 
 	return err
 }
+
 func (pr *PostgresRepository) GetAll() ([]model.BookModel, error) {
 	bms := make([]model.BookModel, 0)
 
@@ -51,6 +52,7 @@ func (pr *PostgresRepository) GetAll() ([]model.BookModel, error) {
 
 	return bms, err
 }
+
 func (pr *PostgresRepository) Update(index int, be entity.BookEntity) error {
 	_, err := pr.db.Exec(`
 		UPDATE books
@@ -74,6 +76,7 @@ func (pr *PostgresRepository) Remove(index int) error {
 
 	return err
 }
+
 func (pr *PostgresRepository) FindByName(name string) (int, error) {
 	var index int
 

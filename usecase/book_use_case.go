@@ -49,6 +49,14 @@ func (buc *BookUseCase) UpdateBook(actor, title string, year, index int) {
 	}
 }
 
+func (buc *BookUseCase) DeleteBook(index int) {
+	err := buc.ir.Remove(index)
+
+	if err != nil {
+		fmt.Printf("Had a error on delete book on database: %s.\n", err)
+	}
+}
+
 func (buc *BookUseCase) FindByNameBook(name string) int {
 	index, err := buc.ir.FindByName(name)
 
