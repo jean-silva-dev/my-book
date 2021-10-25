@@ -1,6 +1,7 @@
 package usecase_test
 
 import (
+	"book/cli/data"
 	"book/database/repository"
 	"book/entity"
 	"book/usecase"
@@ -22,13 +23,14 @@ func TestWithCreateBookSuccessful(t *testing.T) {
 	/*
 		Setup the usecase.
 	*/
-	buc := &usecase.BookUseCase{}
+	buc := createBookUseCase()
 	buc.SetInterfaceRepository(mr)
 
 	/*
 		Call function of usecase.
 	*/
-	buc.CreateBook("A", "B", 1990)
+	bd := createBookData()
+	buc.CreateBook(bd)
 
 	mr.AssertExpectations(t)
 
@@ -36,8 +38,22 @@ func TestWithCreateBookSuccessful(t *testing.T) {
 
 func createBookEntity() entity.BookEntity {
 	be := entity.BookEntity{}
-	be.SetAuthor("A")
-	be.SetTitle("B")
-	be.SetYear(9999)
+	be.SetTitle("The Art of Loving")
+	be.SetAuthor("Erich Fromm")
+	be.SetYear(1956)
 	return be
+}
+
+func createBookData() *data.BookData {
+	bd := data.BookData{
+		Title:  "The Art of Loving",
+		Author: "Erich Fromm",
+		Year:   1956,
+	}
+	return &bd
+}
+
+func createBookUseCase() *usecase.BookUseCase {
+	buc := usecase.BookUseCase{}
+	return &buc
 }

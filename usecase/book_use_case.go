@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"book/cli/data"
 	"book/database/model"
 	"book/database/repository"
 	"book/entity"
@@ -15,11 +16,12 @@ func (buc *BookUseCase) SetInterfaceRepository(ir repository.InterfaceRepository
 	buc.ir = ir
 }
 
-func (buc *BookUseCase) CreateBook(actor, title string, year int) {
+func (buc *BookUseCase) CreateBook(bd *data.BookData) {
 	be := entity.BookEntity{}
-	be.SetAuthor(actor)
-	be.SetTitle(title)
-	be.SetYear(year)
+	be.SetTitle(bd.Title)
+	be.SetAuthor(bd.Author)
+	be.SetYear(bd.Year)
+
 	err := buc.ir.Insert(be)
 
 	if err != nil {
@@ -37,11 +39,11 @@ func (buc *BookUseCase) GetBooks() []model.BookModel {
 	return bms
 }
 
-func (buc *BookUseCase) UpdateBook(actor, title string, year, index int) {
+func (buc *BookUseCase) UpdateBook(bd *data.BookData, index int) {
 	be := entity.BookEntity{}
-	be.SetAuthor(actor)
-	be.SetTitle(title)
-	be.SetYear(year)
+	be.SetTitle(bd.Title)
+	be.SetAuthor(bd.Author)
+	be.SetYear(bd.Year)
 	err := buc.ir.Update(index, be)
 
 	if err != nil {
