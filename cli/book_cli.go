@@ -76,9 +76,21 @@ func update() {
 	books := getAllBooks()
 
 	if len(books) == 0 {
-		log.Println("None data was found on database.")
-	} else {
+		return
+	}
 
+	if len(books) == 1 {
+		fmt.Println("")
+		fmt.Println("Do insert new dates, please.")
+		fmt.Println("")
+		be := createBookEntity()
+
+		element := books[0]
+		buc := factorymethod.CreateBookUseCase()
+		indexForChange := buc.FindByNameBook(element.Title)
+		buc.UpdateBook(be, indexForChange)
+		log.Println("Updated with successful.")
+	} else {
 		for {
 			fmt.Println("")
 			fmt.Println("What is the item that you wish to change?")
@@ -168,11 +180,11 @@ func delete() {
 func createBookEntity() *data.BookData {
 	bd := &data.BookData{}
 
-	fmt.Print("Title name:")
+	fmt.Print("Title name: ")
 	fmt.Scanln(&bd.Title)
-	fmt.Print("Actor name:")
+	fmt.Print("Actor name: ")
 	fmt.Scanln(&bd.Author)
-	fmt.Print("Publication year:")
+	fmt.Print("Publication year: ")
 	fmt.Scanln(&bd.Year)
 	return bd
 }
