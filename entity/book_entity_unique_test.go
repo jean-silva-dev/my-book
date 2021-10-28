@@ -7,17 +7,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestWithEmptyAuthor(t *testing.T) {
+func TestUniqueWithEmptyAuthor(t *testing.T) {
 	b := &entity.BookEntity{}
 	assert.Panics(t, func() { b.SetAuthor("") }, "The code did panic.")
 
 }
-func TestWithEmptyTitle(t *testing.T) {
+func TestUniqueWithEmptyTitle(t *testing.T) {
 	b := &entity.BookEntity{}
 	assert.Panics(t, func() { b.SetTitle("") }, "The code did panic.")
 }
 
-func TestWithEmptyYear(t *testing.T) {
+func TestUniqueWithEmptyYear(t *testing.T) {
 	b := &entity.BookEntity{}
 	assert.Panics(t, func() { b.SetYear(0) }, "The code did panic.")
 }
